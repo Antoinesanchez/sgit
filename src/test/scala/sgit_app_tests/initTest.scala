@@ -26,8 +26,8 @@ class initTest extends FunSpec with BeforeAndAfter {
 
   describe("With sgit init command already used") {
     it("Shouldn't do anything") {
-      assert(Init.sgit_init())
-      assert(!Init.sgit_init())
+      assert(Init.sgit_init() == "Initialised empty sGit repository in " + Paths.get(".").toAbsolutePath + ".sgit")
+      assert(Init.sgit_init() == "Reinitialised existing sGit repository in " + Paths.get(".").toAbsolutePath + ".sgit")
     }
   }
 }

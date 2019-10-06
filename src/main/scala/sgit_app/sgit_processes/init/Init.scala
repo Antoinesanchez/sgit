@@ -8,11 +8,12 @@ object Init {
   /**
   * create and initialize .sgit repository in current folder
   */
-  def sgit_init(): Boolean = {
+  def sgit_init(): String = {
     val ok = Initialization.createSgitDirectory()
     if (!(Files.readString(Paths.get(".sgit/HEAD")) == "ref: refs/heads/master"))
       Tools.writeFile(".sgit/HEAD", "ref: refs/heads/master")
-    ok
+    if (ok) "Initialised empty sGit repository in " + Paths.get(".").toAbsolutePath + ".sgit"
+    else "Reinitialised existing sGit repository in " + Paths.get(".").toAbsolutePath + ".sgit"
   }
 
 }

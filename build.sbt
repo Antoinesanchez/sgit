@@ -10,6 +10,8 @@ lazy val root = (project in file("."))
     name := "sgit",
     libraryDependencies ++= Seq(
       scalaTest % Test,
-      scopt
+      scalactic,
+      scopt,
+      better
     )
   )

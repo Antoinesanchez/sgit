@@ -4,7 +4,7 @@ import scopt.OParser
 
 object Parser {
   val builder = OParser.builder[Config]
-  val parser1 = {
+  val parser = {
     import builder._
     OParser.sequence(
       programName("sgit"),

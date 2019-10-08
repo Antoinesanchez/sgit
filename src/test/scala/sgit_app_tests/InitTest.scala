@@ -4,7 +4,7 @@ import org.scalatest._
 import better.files._
 import java.nio.file.{Files, Paths}
 import sgit_app.io.Tools
-import sgit_app.sgit_processes.init._
+import sgit_app.sgit_processes.Init
 
 class initTest extends FunSpec with BeforeAndAfter {
 
@@ -16,7 +16,7 @@ class initTest extends FunSpec with BeforeAndAfter {
     it("Should create a .sgit directory with the right structure") {
       if(Files.exists(Paths.get(".sgit"))) Tools.delete(".sgit")
       Init.sgit_init()
-      assert(Files.exists(Paths.get(".sgit/staged")))
+      assert(Files.exists(Paths.get(".sgit/index")))
       assert(Files.exists(Paths.get(".sgit/objects")))
       assert(Files.exists(Paths.get(".sgit/refs/tags")))
       assert(Files.exists(Paths.get(".sgit/refs/heads")))

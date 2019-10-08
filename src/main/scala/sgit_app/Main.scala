@@ -2,17 +2,7 @@ package sgit_app
 
 import scopt.OParser
 import sgit_app.commands._
-import sgit_processes.init._
-import sgit_processes.status._
-import sgit_processes.diff._
-import sgit_processes.add._
-import sgit_processes.commit._
-import sgit_processes.log._
-import sgit_processes.branch._
-import sgit_processes.checkout._
-import sgit_processes.tag._
-import sgit_processes.merge._
-import sgit_processes.rebase._
+import sgit_processes._
 
 
 object Main extends App {

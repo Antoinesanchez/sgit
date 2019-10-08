@@ -16,7 +16,7 @@ object Initialization {
       Tools.createDirOrFile(true,  ".sgit/refs")
       Tools.createDirOrFile(false, ".sgit/refs/heads")
       Tools.createDirOrFile(false, ".sgit/refs/tags")
-      Tools.createDirOrFile(false, ".sgit/staged")
+      Tools.createDirOrFile(false, ".sgit/index")
       true
     }
     else false

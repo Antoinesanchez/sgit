@@ -1,4 +1,4 @@
-package sgit_app.sgit_processes.init
+package sgit_app.sgit_processes
 
 import sgit_app.io._
 import java.nio.file.{Files, Paths}

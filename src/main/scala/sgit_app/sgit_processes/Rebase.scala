@@ -1,4 +1,4 @@
-package sgit_app.sgit_processes.rebase
+package sgit_app.sgit_processes
 
 import sgit_app.io._
 

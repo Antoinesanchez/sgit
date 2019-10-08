@@ -1,4 +1,4 @@
-package sgit_app.sgit_processes.checkout
+package sgit_app.sgit_processes
 
 import sgit_app.io._
 

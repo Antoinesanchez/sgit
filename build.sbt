@@ -15,3 +15,5 @@ lazy val root = (project in file("."))
       better
     )
   )
+
+parallelExecution in Test := false

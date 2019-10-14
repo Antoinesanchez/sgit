@@ -31,39 +31,36 @@ object Tools {
   /**
   * Yield all files in the working directory, recursively
   */
-  def yieldAllFiles(): Seq[File] = {
-    workingDirectory
+  def yieldAllFiles(starting_dir: String = ""): Seq[File] = {
+    starting_dir
+      .toFile
       .listRecursively
       .filterNot(f => f.path.toString.contains(".sgit"))
       .toSeq
   }
 
-  /**
-  * Yield all files whose name has been asked
-  * @param fileNames : Names of the files that are asked
-  */
-  def yieldAskedFiles(fileNames: Seq[String]): Seq[File] = {
-    fileNames
-      .iterator
-      .map((f: String) => if (f.toFile.exists) f.toFile else null)
-      .filterNot(f => f == null)
-      .filterNot(f => f.path.toString.contains(".sgit"))
-      .toSeq
-  }
+  // /**
+  // * Yield all files whose name has been asked
+  // * @param fileNames : Names of the files that are asked
+  // */
+  // def yieldAskedFiles(fileNames: Seq[String]): Seq[File] = {
+  //   fileNames
+  //     .iterator
+  //     .map((f: String) => if (f.toFile.exists) f.toFile else null)
+  //     .filterNot(f => f == null)
+  //     .filterNot(f => f.path.toString.contains(".sgit"))
+  //     .toSeq
+  // }
 
   /**
   * Yield all files matching a regex
-  * @param regex : Regex that is supposed to match with files
+  * @param glob : Regex that is supposed to match with files
   */
-  def yieldRegexFiles(regex: Regex): Seq[File] = {
-    workingDirectory
-      .listRecursively
-      .map(f => f.name match {
-        case regex => f
-        case _ => null
-      })
-      .filterNot(f => f == null)
-      .filterNot(f => f.path.toString.contains(".sgit"))
-      .toSeq
+  def yieldGlobFiles(glob: String, starting_dir: String = ""): Seq[File] = {
+    val globres = starting_dir
+      .toFile
+      .glob(glob)
+    val resfiltered = globres.filterNot(f => f.path.toString.contains(".sgit"))
+    resfiltered.toSeq
   }
 }

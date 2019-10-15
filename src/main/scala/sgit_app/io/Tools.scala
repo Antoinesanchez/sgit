@@ -6,7 +6,7 @@ import scala.util.matching.Regex
 
 object Tools {
 
-  val workingDirectory: File = ".sgit/".toFile.parent
+  val workingDirectoryPath: String = ".sgit/".toFile.parent.pathAsString + "/"
 
   /**
   * Delete everything recursively
@@ -31,7 +31,7 @@ object Tools {
   /**
   * Yield all files in the working directory, recursively
   */
-  def yieldAllFiles(starting_dir: String = ""): Seq[File] = {
+  def yieldAllFiles(starting_dir: String = "."): Seq[File] = {
     starting_dir
       .toFile
       .listRecursively
@@ -39,24 +39,11 @@ object Tools {
       .toSeq
   }
 
-  // /**
-  // * Yield all files whose name has been asked
-  // * @param fileNames : Names of the files that are asked
-  // */
-  // def yieldAskedFiles(fileNames: Seq[String]): Seq[File] = {
-  //   fileNames
-  //     .iterator
-  //     .map((f: String) => if (f.toFile.exists) f.toFile else null)
-  //     .filterNot(f => f == null)
-  //     .filterNot(f => f.path.toString.contains(".sgit"))
-  //     .toSeq
-  // }
-
   /**
   * Yield all files matching a regex
   * @param glob : Regex that is supposed to match with files
   */
-  def yieldGlobFiles(glob: String, starting_dir: String = ""): Seq[File] = {
+  def yieldGlobFiles(glob: String, starting_dir: String = "."): Seq[File] = {
     val globres = starting_dir
       .toFile
       .glob(glob)

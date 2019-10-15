@@ -24,7 +24,7 @@ object sgitTools {
   * @param file : given file
   */
   def createStaged(file: File): Staged = {
-    Staged(file.sha1.toString, file.pathAsString)
+    Staged(file.sha1.toString, file.pathAsString.replaceAll(Tools.workingDirectoryPath, ""))
   }
 
 }

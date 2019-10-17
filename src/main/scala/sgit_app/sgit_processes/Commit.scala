@@ -3,7 +3,7 @@ package sgit_app.sgit_processes
 import better.files._
 import java.nio.file.{Files, Paths}
 import sgit_app.io._
-import sgit_app.sgit_objects.Staged
+import sgit_app.sgit_objects._
 
 object Commit {
 
@@ -28,15 +28,24 @@ object Commit {
       .toFile
       .sha1
       .toString
+    val newObjects = index
+      .split("\n")
+      .map(line => line.split(" ").head)
+      .filterNot(l => l == "")
     val name = target + ".sgit/objects/" + hash
     if (objects.length == 0) {
       //Initial commit
       if (index.replaceAll(" ", "").replaceAll("\n", "").nonEmpty) {
         //index is not empty, changes to commit
         val commit = "0000000000000000000000000000000000000000 " + hash
-        Tools.createDirOrFile(false, name)
+        Tools.createDirOrFile(true, name)
         Tools.createDirOrFile(false, ref)
-        Tools.writeFile(name, index)
+        newObjects.foreach(o => {
+          val newObject = name + "/" + o
+          val newContent = o.toFile.contentAsString
+          Tools.createDirOrFile(false, newObject)
+          Tools.writeFile(newObject, newContent)
+        })
         Tools.writeFile(ref, commit)
         "changes are commited"
       } else {
@@ -52,8 +61,13 @@ object Commit {
         .split(" ")
         .last
       val commit = parentCommit + " " + hash
-      Tools.createDirOrFile(false, name)
-      Tools.writeFile(name, index)
+      Tools.createDirOrFile(true, name)
+      newObjects.foreach(o => {
+        val newObject = name + "/" + o
+        val newContent = o.toFile.contentAsString
+        Tools.createDirOrFile(false, newObject)
+        Tools.writeFile(newObject, newContent)
+      })
       Tools.writeFile(ref, commit)
       "changes are commited"
     }

@@ -19,7 +19,7 @@ object Tools {
   * @param isDirectory : true if directory, else false
   * @param name : name of the file or directory
   */
-  def createDirOrFile(isDirectory: Boolean, name: String): Unit = name.toFile.createIfNotExists(isDirectory, false)
+  def createDirOrFile(isDirectory: Boolean, name: String): Unit = name.toFile.createIfNotExists(isDirectory, true)
 
   /**
   * Write content in file

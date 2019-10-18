@@ -1,9 +1,9 @@
-##SGIT
+## SGIT
 
-###Git, but it's in scala
+### Git, but it's in scala
 This project is an exercise in which I try to implement some features of git in scala. The main goal is to practice using Functional Programming.
 
-###How to use it
+### How to use it
 Simply clone the project and while in the project folder, type
 
 `sbt assembly`

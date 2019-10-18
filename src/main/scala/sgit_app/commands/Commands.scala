@@ -95,7 +95,7 @@ object Parser {
         ),
       checkConfig(
         c =>
-          if (c.command == "") failure("You need to write a command")
+          if (c.command == "") failure("You need to write a command.\nHere is how to use sgit:")
           else success
       )
     )

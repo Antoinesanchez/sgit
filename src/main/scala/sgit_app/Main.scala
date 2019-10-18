@@ -12,7 +12,7 @@ object Main extends App {
   */
   OParser.parse(Parser.parser, args, Config()) match {
     case Some(config) => configParse(config)
-    case None => println("Something went wrong, try again")
+    case None => println("Please type a command")
   }
 
   /**

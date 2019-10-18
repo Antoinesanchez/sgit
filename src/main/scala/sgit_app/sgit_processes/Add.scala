@@ -34,7 +34,7 @@ object Add {
         if (!index.contains(f.fileName)) {
           index = index :+ staged
         }
-        else if (index.contains(f.fileName) && !index.contains(f.contentHash)) {
+        else if (!index.contains(f.contentHash)) {
           index = index.filter(e => !e.contains(f.fileName))
           index = index :+ staged
         }

@@ -39,6 +39,7 @@ object Commit {
         //index is not empty, changes to commit
         val commit = "0000000000000000000000000000000000000000 " + hash
         Tools.createDirOrFile(true, name)
+        Tools.createDirOrFile(false, name + "/" + name)
         Tools.createDirOrFile(false, ref)
         newObjects.foreach(o => {
           val newObject = name + "/" + o
@@ -47,6 +48,7 @@ object Commit {
           Tools.writeFile(newObject, newContent)
         })
         Tools.writeFile(ref, commit)
+        Tools.writeFile(name + "/" + name.toFile.name, index)
         "changes are commited"
       } else {
         //No commit and no index or nothing in it
@@ -62,6 +64,7 @@ object Commit {
         .last
       val commit = parentCommit + " " + hash
       Tools.createDirOrFile(true, name)
+      Tools.createDirOrFile(false, name + "/" + name)
       newObjects.foreach(o => {
         val newObject = name + "/" + o
         val newContent = o.toFile.contentAsString
@@ -69,6 +72,7 @@ object Commit {
         Tools.writeFile(newObject, newContent)
       })
       Tools.writeFile(ref, commit)
+      Tools.writeFile(name + "/" + name, index)
       "changes are commited"
     }
   }

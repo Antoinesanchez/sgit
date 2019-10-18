@@ -6,7 +6,7 @@ import java.nio.file.{Files, Paths}
 import sgit_app.io.Tools
 import sgit_app.sgit_processes.Init
 
-class initTest extends FunSpec with BeforeAndAfter {
+class InitTest extends FunSpec with BeforeAndAfter {
 
   after {
     Tools.delete(".sgit")
@@ -26,8 +26,8 @@ class initTest extends FunSpec with BeforeAndAfter {
 
   describe("With sgit init command already used") {
     it("Shouldn't do anything") {
-      assert(Init.sgit_init() == "Initialised empty sGit repository in " + Paths.get("").toAbsolutePath + ".sgit")
-      assert(Init.sgit_init() == "Reinitialised existing sGit repository in " + Paths.get("").toAbsolutePath + ".sgit")
+      assert(Init.sgit_init() == "Initialised empty sGit repository in " + Paths.get("").toAbsolutePath + "/.sgit")
+      assert(Init.sgit_init() == "Reinitialised existing sGit repository in " + Paths.get("").toAbsolutePath + "/.sgit")
     }
   }
 }

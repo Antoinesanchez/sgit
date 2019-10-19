@@ -116,6 +116,79 @@ object sgitTools {
     }
   }
 
+  /**
+  * Yield different files from 2 commits
+  */
+  def commitCommitDeltas(hash1: String, hash2: String, target: String = ""): List[String] = {
+    val path1 = target + ".sgit/objects/" + hash1 + "/" + hash1
+    val path2 = target + ".sgit/objects/" + hash2 + "/" + hash2
+    if(!Files.exists(Paths.get(path1)) && !Files.exists(Paths.get(path2))) Nil
+    else {
+      val files1 = path1
+        .toFile
+        .contentAsString
+        .split("\n")
+        .filterNot(line => line == "")
+        .map(line => line.split(" ").head)
+        .toSeq
+      if (hash2 == "0000000000000000000000000000000000000000") files1.toList
+      else {
+        val files2 = path2
+          .toFile
+          .contentAsString
+          .split("\n")
+          .filterNot(line => line == "")
+          .map(line => line.split(" ").head)
+          .toSeq
+        val seq1 = files1
+          .diff(files2)
+          .toList
+        val seq2 = files2
+          .diff(files1)
+          .toList
+        (seq1 ++ seq2)
+      }
+    }
+  }
+
+  def commitDiff(fileName: String, hash1: String, hash2: String, target: String = ""): String = {
+    val path1 = target + ".sgit/objects/" + hash1 + "/" + fileName
+    val path2 = target + ".sgit/objects/" + hash2 + "/" + fileName
+    if(!Files.exists(Paths.get(path1)) && !Files.exists(Paths.get(path2))) fileName + ": an error as occured"
+    else {
+      val file1 = {
+        if (Files.exists(Paths.get(path1))) {
+          path1
+            .toFile
+            .contentAsString
+            .split("\n")
+            .toSeq
+        } else Seq()
+      }
+      val file2 = {
+        if(Files.exists(Paths.get(path2)))
+          path2
+            .toFile
+            .contentAsString
+            .split("\n")
+            .toSeq
+        else Seq()
+      }
+      val diff1 = file1
+        .diff(file2)
+        .map(line => Tools.greenWrapper("+ " + line + "\n"))
+        .toList
+      val diff2 = file2
+        .diff(file1)
+        .map(line => Tools.redWrapper("- " + line + "\n"))
+        .toList
+      val res = (diff1 ++ diff2)
+        .map(line => line.toString)
+        .foldLeft("")((text, line) => text + line)
+      fileName + ":\n" + res
+    }
+  }
+
   def fileDiff(fileName: String, target: String = ""): List[String] = {
     val objectPath = target + ".sgit/objects/" + yieldLastCommitHashIfExists(target) + "/" + fileName
     if (!Files.exists(Paths.get(fileName))) {
@@ -127,7 +200,7 @@ object sgitTools {
         val res: List[String] = Files
           .readString(Paths.get(objectPath))
           .split("\n")
-          .map(line => "- " + line + "\n")
+          .map(line => Tools.redWrapper("- " + line + "\n"))
           .map(line => line.toString) //Somehow, the compilator doesn't believe me when I tell it that the elements of this List are String
           .toList
         flag +: res
@@ -145,11 +218,11 @@ object sgitTools {
         .toSeq
       val currentDiffCommit = currentFile
         .diff(commitFile)
-        .map(line => "+ " + line + "\n")
+        .map(line => Tools.greenWrapper("+ " + line + "\n"))
         .toList
       val commitDiffCurrent = commitFile
         .diff(currentFile)
-        .map(line => "- " + line + "\n")
+        .map(line => Tools.redWrapper("- " + line + "\n"))
         .toList
       res = res ++ currentDiffCommit ++ commitDiffCurrent
       val flag: String = "Updated: " + fileName + "\n"
@@ -157,6 +230,17 @@ object sgitTools {
         .map(line => line.toString) //Somehow, the compilator doesn't believe me when I tell it that the elements of this List are String
         .toList
     }
+  }
+
+  /**
+  * Return list of commits on branch
+  */
+  def yieldCommits(ref: String): List[String] = {
+    Files
+      .readString(Paths.get(ref))
+      .split("\n")
+      .toList
+      .reverse
   }
 
   /**

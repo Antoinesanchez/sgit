@@ -40,6 +40,16 @@ object Tools {
   }
 
   /**
+  * Make the string parameter green if printed
+  */
+  def greenWrapper(string: String): String = "\u001B[32m" + string + "\u001B[0m"
+
+  /**
+  * Make the string parameter red if printed
+  */
+  def redWrapper(string: String): String = "\u001B[31m" + string + "\u001B[0m"
+
+  /**
   * Yield all files matching a regex
   * @param glob : Regex that is supposed to match with files
   */

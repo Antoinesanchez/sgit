@@ -46,15 +46,15 @@ class LogTest extends FunSpec with BeforeAndAfter {
       assert(Log.sgit_log("", "test/").contains("commit: " + index2 + "\ncommit: " + index1))
     }
 
-    it("Should display the name of commits if flag p is used") {
+    it("Should display the name of commits as well as diffs if flag p is used") {
       assert(Log.sgit_log("p", "test/").contains("+ This is a sgit log test"))
       assert(Log.sgit_log("p", "test/").contains("- This is a test in a text file"))
     }
 
-    it("Should display the name of commits option stat is used") {
-      assert(Log.sgit_log("stat", "test/").contains("test/a.txt"))
-      assert(Log.sgit_log("stat", "test/").contains("1 file changed, 1 insertion, 1 deletion"))
-    }
+    // it("Should display the name of commits as well as stats if option stat is used") {
+    //   assert(Log.sgit_log("stat", "test/").contains("test/a.txt"))
+    //   assert(Log.sgit_log("stat", "test/").contains("1 file(s) changed, 1 insertion(s), 1 deletion(s)"))
+    // }
 
   }
 

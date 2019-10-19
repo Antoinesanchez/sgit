@@ -57,7 +57,9 @@ class StatusTest extends FunSpec with BeforeAndAfter {
         Add.sgit_add(Seq("."), "test/")
         Commit.sgit_commit("test/")
         Tools.delete("test/.sgit/index")
-        assert(Status.sgit_status("test/").contains("Changes to be committed:\n\ndeleted: test/a.txt\ndeleted: test/a.c"))
+        assert(Status.sgit_status("test/").contains("Changes to be committed:"))
+        assert(Status.sgit_status("test/").contains("deleted: test/a.txt"))
+        assert(Status.sgit_status("test/").contains("deleted: test/a.c"))
         assert(Status.sgit_status("test/").contains("Untracked Files:\n\ntest/a.txt\ntest/a.c"))
       }
 

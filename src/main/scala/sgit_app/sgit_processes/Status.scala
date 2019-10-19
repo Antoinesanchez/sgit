@@ -14,7 +14,7 @@ object Status {
     if(!Files.exists(Paths.get(target + ".sgit"))
     || !Files.exists(Paths.get(target + ".sgit/objects"))) "fatal: not a sgit repository"
     else {
-      "Changes not staged for commit:\n\n" + sgitTools.workingDirectoryStagedDeltas(target) + "\n\nChanges to be committed:\n\n" + sgitTools.stagedCommitDeltas(target)
+      "Changes not staged for commit:\n\n" + Tools.redWrapper(sgitTools.workingDirectoryStagedDeltas(target)) + "\n\nChanges to be committed:\n\n" + Tools.greenWrapper(sgitTools.stagedCommitDeltas(target))
     }
   }
 

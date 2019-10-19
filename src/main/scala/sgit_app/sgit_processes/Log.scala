@@ -12,7 +12,8 @@ object Log {
   */
   def sgit_log(option: String = "", target: String = ""): String = {
     if(!Files.exists(Paths.get(target + ".sgit"))
-    || !Files.exists(Paths.get(target + ".sgit/objects"))) "fatal: not a sgit repository"
+    || !Files.exists(Paths.get(target + ".sgit/objects"))
+    || !Files.exists(Paths.get(target + ".sgit/HEAD"))) "fatal: not a sgit repository"
     else {
       val branch = {
       val fHEAD = target + ".sgit/HEAD"

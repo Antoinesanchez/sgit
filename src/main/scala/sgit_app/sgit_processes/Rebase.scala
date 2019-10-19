@@ -8,7 +8,7 @@ object Rebase {
   * Show change between commits
   */
   def sgit_rebase(branch: String, option: String = ""): String = {
-    ""
+    "Not implemented yet"
   }
 
 }

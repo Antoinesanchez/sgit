@@ -12,7 +12,9 @@ object Add {
   * TODO Deal with delete
   */
   def sgit_add(files: Seq[String], target: String = ""): String = {
-    if(!Files.exists(Paths.get(target + ".sgit")) || !Files.exists(Paths.get(target + ".sgit/objects"))) "fatal: not a sgit repository"
+    if(!Files.exists(Paths.get(target + ".sgit"))
+    || !Files.exists(Paths.get(target + ".sgit/objects"))
+    || !Files.exists(Paths.get(target + ".sgit/HEAD"))) "fatal: not a sgit repository"
     else {
       if(!Files.exists(Paths.get(target + ".sgit/index"))) Tools.createDirOrFile(false, target + ".sgit/index")
       var index: List[String] = Files.readString(Paths.get(target + ".sgit/index"))

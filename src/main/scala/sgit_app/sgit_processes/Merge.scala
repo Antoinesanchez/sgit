@@ -8,7 +8,7 @@ object Merge {
   * Join two or more development histories together
   */
   def sgit_merge(branch: String = ""): String = {
-    ""
+    "Not implemented yet"
   }
 
 }

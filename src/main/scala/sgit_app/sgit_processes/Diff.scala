@@ -12,7 +12,8 @@ object Diff {
   */
   def sgit_diff(target: String = ""): String = {
     if(!Files.exists(Paths.get(target + ".sgit"))
-    || !Files.exists(Paths.get(target + ".sgit/objects"))) "fatal: not a sgit repository"
+    || !Files.exists(Paths.get(target + ".sgit/objects"))
+    || !Files.exists(Paths.get(target + ".sgit/HEAD"))) "fatal: not a sgit repository"
     else if ((target+".sgit/refs/heads").toFile.children.toList.size == 0) ""
     else {
       sgitTools

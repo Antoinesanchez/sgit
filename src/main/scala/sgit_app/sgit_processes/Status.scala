@@ -12,7 +12,8 @@ object Status {
   */
   def sgit_status(target: String = ""): String = {
     if(!Files.exists(Paths.get(target + ".sgit"))
-    || !Files.exists(Paths.get(target + ".sgit/objects"))) "fatal: not a sgit repository"
+    || !Files.exists(Paths.get(target + ".sgit/objects"))
+    || !Files.exists(Paths.get(target + ".sgit/HEAD"))) "fatal: not a sgit repository"
     else {
       "Changes not staged for commit:\n\n" + Tools.redWrapper(sgitTools.workingDirectoryStagedDeltas(target)) + "\n\nChanges to be committed:\n\n" + Tools.greenWrapper(sgitTools.stagedCommitDeltas(target))
     }

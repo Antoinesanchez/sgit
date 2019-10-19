@@ -8,7 +8,7 @@ object Checkout {
   * Switch branches or restore working tree files
   */
   def sgit_checkout(checkout: String): String = {
-    ""
+    "Not implemented yet"
   }
 
 }

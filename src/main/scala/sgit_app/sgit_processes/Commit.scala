@@ -11,7 +11,9 @@ object Commit {
   * Record changes to the repository
   */
   def sgit_commit(target: String = ""): String = {
-    if(!Files.exists(Paths.get(target + ".sgit")) || !Files.exists(Paths.get(target + ".sgit/objects"))) "fatal: not a sgit repository"
+    if(!Files.exists(Paths.get(target + ".sgit"))
+    || !Files.exists(Paths.get(target + ".sgit/objects"))
+    || !Files.exists(Paths.get(target + ".sgit/HEAD"))) "fatal: not a sgit repository"
     val branch = {
       val fHEAD = target + ".sgit/HEAD"
       if (Files.exists(Paths.get(fHEAD))) 

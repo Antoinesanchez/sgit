@@ -12,7 +12,19 @@ object Commit {
   */
   def sgit_commit(target: String = ""): String = {
     if(!Files.exists(Paths.get(target + ".sgit")) || !Files.exists(Paths.get(target + ".sgit/objects"))) "fatal: not a sgit repository"
-    val branch = "master" //TODO change when possible
+    val branch = {
+      val fHEAD = target + ".sgit/HEAD"
+      if (Files.exists(Paths.get(fHEAD))) 
+        Files
+          .readString(Paths.get(fHEAD))
+          .split("/")
+          .last
+      else {
+        Tools.createDirOrFile(false, fHEAD)
+        Tools.writeFile(fHEAD, "ref: refs/heads/master")
+        "master"
+      }
+    }
     val ref = target + ".sgit/refs/heads/" + branch
     val objects = (target+".sgit/objects")
       .toFile
@@ -37,7 +49,7 @@ object Commit {
       //Initial commit
       if (index.replaceAll(" ", "").replaceAll("\n", "").nonEmpty) {
         //index is not empty, changes to commit
-        val commit = "0000000000000000000000000000000000000000 " + hash
+        val commit = "0000000000000000000000000000000000000000 " + hash + "\n"
         Tools.createDirOrFile(true, name)
         Tools.createDirOrFile(false, name + "/" + name)
         Tools.createDirOrFile(false, ref)

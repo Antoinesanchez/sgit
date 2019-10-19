@@ -83,8 +83,10 @@ class CommitTest extends FunSpec with BeforeAndAfter {
         val commit = "test/.sgit/refs/heads/master"
           .toFile
           .contentAsString
-          .split(" ")
+          .split("\n")
           .head
+          .split(" ")
+          .last
         Tools.createDirOrFile(false,"test/a.md")
         Tools.createDirOrFile(false,"test/a.cpp")
         Add.sgit_add(Seq("."), "test/")

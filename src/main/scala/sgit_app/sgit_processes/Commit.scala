@@ -49,7 +49,7 @@ object Commit {
         })
         Tools.writeFile(ref, commit)
         Tools.writeFile(name + "/" + name.toFile.name, index)
-        "changes are commited"
+        "changes are committed"
       } else {
         //No commit and no index or nothing in it
         "Nothing to commit"

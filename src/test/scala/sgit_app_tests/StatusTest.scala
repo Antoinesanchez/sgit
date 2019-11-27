@@ -25,7 +25,10 @@ class StatusTest extends FunSpec with BeforeAndAfter {
     describe("With no commit yet") {
 
       it("should display files as untracked if not staged yet") {
-        assert(Status.sgit_status("test/").contains("Untracked Files:\n\ntest/a.txt\ntest/a.c"))
+        val output = Status.sgit_status("test/")
+        assert(output.contains("Untracked Files:\n\n"))
+        assert(output.split("Untracked Files:").last.contains("test/a.txt"))
+        assert(output.split("Untracked Files:").last.contains("test/a.c"))
       }
 
       it("should display files as new files if added to the index and no longer as untracked files") {
@@ -55,12 +58,15 @@ class StatusTest extends FunSpec with BeforeAndAfter {
       //This test is the origin of my version of status
       it("should display all files as deleted in changes to commit and all files as untracked if I delete the index") {
         Add.sgit_add(Seq("."), "test/")
-        Commit.sgit_commit("test/")
+        Commit.sgit_commit("","","test/")
         Tools.delete("test/.sgit/index")
-        assert(Status.sgit_status("test/").contains("Changes to be committed:"))
-        assert(Status.sgit_status("test/").contains("deleted: test/a.txt"))
-        assert(Status.sgit_status("test/").contains("deleted: test/a.c"))
-        assert(Status.sgit_status("test/").contains("Untracked Files:\n\ntest/a.txt\ntest/a.c"))
+        val output = Status.sgit_status("test/")
+        assert(output.contains("Changes to be committed:"))
+        assert(output.contains("deleted: test/a.txt"))
+        assert(output.contains("deleted: test/a.c"))
+        assert(output.contains("Untracked Files:"))
+        assert(output.split("Untracked Files:").last.contains("test/a.txt"))
+        assert(output.split("Untracked Files:").last.contains("test/a.c"))
       }
 
     }

@@ -17,7 +17,7 @@ object Diff {
     else if ((target+".sgit/refs/heads").toFile.children.toList.size == 0) ""
     else {
       sgitTools
-        .workingDirectoryCommitDeltas(target)
+        .workingDirectoryIndexDeltas(target)
         .flatMap(file => sgitTools.fileDiff(file, target))
         .foldLeft("")((res, line) => {
           res + line

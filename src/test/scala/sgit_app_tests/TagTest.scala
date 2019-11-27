@@ -35,7 +35,7 @@ class TagTest extends FunSpec with BeforeAndAfter {
 
       it("Should create the tag succesfully if not already used") {
         Add.sgit_add(Seq("."), "test/")
-        Commit.sgit_commit("test/")
+        Commit.sgit_commit("","","test/")
         STag.sgit_tag("tag", "test/")
         val lastCommitHash = "test/.sgit/refs/heads/master"
           .toFile
@@ -48,7 +48,7 @@ class TagTest extends FunSpec with BeforeAndAfter {
 
       it("Shouldn't allow a user to create the same tag twice") {
         Add.sgit_add(Seq("."), "test/")
-        Commit.sgit_commit("test/")
+        Commit.sgit_commit("","","test/")
         assert(STag.sgit_tag("tag", "test/") == "")
         assert(STag.sgit_tag("tag", "test/") == "fatal: tag 'tag' already exists")
       }

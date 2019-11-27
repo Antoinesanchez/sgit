@@ -6,6 +6,7 @@ case class Config(
   command: String = "",
   option: String = "",
   branch: String = "",
+  message: String = "",
   checkout: String = "",
   tag: String = "",
   files: Seq[String] = Seq()){}

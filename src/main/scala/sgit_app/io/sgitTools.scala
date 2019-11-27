@@ -9,7 +9,7 @@ object sgitTools {
   /**
   * Returns status between the working directory and staged files
   */
-  def workingDirectoryStagedDeltas(target: String = ""): String = {
+  def workingDirectoryStagedStatus(target: String = ""): String = {
     var untracked: Seq[String] = Seq()
     var modified: Seq[String] = Seq()
     var deleted: Seq[String] = Seq()
@@ -51,7 +51,7 @@ object sgitTools {
   /**
   * Returns deltas between the index and the last commit
   */
-  def stagedCommitDeltas(target: String = ""): String = {
+  def stagedCommitStatus(target: String = ""): String = {
     var newFiles: Seq[String] = Seq()
     var modified: Seq[String] = Seq()
     var deleted: Seq[String] = Seq()
@@ -91,20 +91,20 @@ object sgitTools {
   /**
   * Yields the list of file names in which changes have been detected since last commit
   */
-  def workingDirectoryCommitDeltas(target: String = ""): List[String] = {
+  def workingDirectoryIndexDeltas(target: String = ""): List[String] = {
     var res = List("")
-    val lastCommit = yieldLastCommitIfExists(target)
+    val index = yieldIndexIfExists(target)
     val wd = Tools
       .yieldAllFiles(target)
       .map(f => createStaged(f))
       .toList
-    if (lastCommit == List("")) lastCommit
+    if (index == List("")) index
     else { 
-      lastCommit.foreach(f => {
+      index.foreach(f => {
         val file = f.split(" ").head
         val hash = f.split(" ").last
         if(wd.filter(f => f.fileName.contains(file)).size == 0) {
-          //File in last commit was deleted
+          //File was deleted
           res = res :+ file
         }
         else if (wd.filter(f => f.contentHash == hash).size == 0) {
@@ -112,7 +112,7 @@ object sgitTools {
           res = res :+ file
         }
       })
-      res.filterNot(f => f == "")
+      res.filterNot(f => f == "").distinct
     }
   }
 
@@ -129,16 +129,14 @@ object sgitTools {
         .contentAsString
         .split("\n")
         .filterNot(line => line == "")
-        .map(line => line.split(" ").head)
         .toSeq
-      if (hash2 == "0000000000000000000000000000000000000000") files1.toList
+      if (hash2 == "0000000000000000000000000000000000000000") files1.map(line => line.split(" ").head).toList
       else {
         val files2 = path2
           .toFile
           .contentAsString
           .split("\n")
           .filterNot(line => line == "")
-          .map(line => line.split(" ").head)
           .toSeq
         val seq1 = files1
           .diff(files2)
@@ -146,7 +144,10 @@ object sgitTools {
         val seq2 = files2
           .diff(files1)
           .toList
-        (seq1 ++ seq2)
+        val res = (seq1 ++ seq2)
+          .map(line => line.split(" ").head)
+          .distinct
+        res
       }
     }
   }
@@ -154,7 +155,7 @@ object sgitTools {
   def commitDiff(fileName: String, hash1: String, hash2: String, target: String = ""): String = {
     val path1 = target + ".sgit/objects/" + hash1 + "/" + fileName
     val path2 = target + ".sgit/objects/" + hash2 + "/" + fileName
-    if(!Files.exists(Paths.get(path1)) && !Files.exists(Paths.get(path2))) fileName + ": an error as occured"
+    if(!Files.exists(Paths.get(path1)) || (!Files.exists(Paths.get(path2)) && hash2!="0000000000000000000000000000000000000000")) fileName + ": an error has occured"
     else {
       val file1 = {
         if (Files.exists(Paths.get(path1))) {
@@ -183,6 +184,7 @@ object sgitTools {
         .map(line => Tools.redWrapper("- " + line + "\n"))
         .toList
       val res = (diff1 ++ diff2)
+        .distinct
         .map(line => line.toString)
         .foldLeft("")((text, line) => text + line)
       fileName + ":\n" + res
@@ -262,8 +264,7 @@ object sgitTools {
         .replaceAll("\r", "")
         .split("\n")
         .last
-        .split(" ")
-        .last
+        .split(" ")(1)
     } else ""
   }
 

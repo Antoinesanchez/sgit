@@ -29,12 +29,22 @@ object Parser {
         ),
       cmd("commit")
         .action((_, c) => c.copy(command = "commit"))
-        .text("Record changes to the repository"),
+        .text("Record changes to the repository")
+        .children(
+          opt[Unit]("m")
+            .abbr("m")
+            .action((_, c) => c.copy(option = "m"))
+            .text("Adds a message to commit"),
+          arg[String]("<message>")
+            .action((x, c) => c.copy(message = x))
+            .text("commit message")
+        ),
       cmd("log")
         .action((_, c) => c.copy(command = "log"))
         .text("Show commit logs")
         .children(
           opt[Unit]("p")
+            .abbr("p")
             .action((_, c) => c.copy(option = "p"))
             .text("Show changes overtime"),
           opt[Unit]("stat")
@@ -46,7 +56,6 @@ object Parser {
         .text("Create a new branch")
         .children(
           arg[String]("<branch name>")
-            .required()
             .action((x, c) => c.copy(branch = x))
             .text("Branch to be created"),
           opt[String]("")
@@ -90,6 +99,7 @@ object Parser {
             .action((x, c) => c.copy(branch = x))
             .text("Branch whose tip will have the current branch's commits reapplied"),
           opt[String]("i")
+            .abbr("i")
             .action((x, c) => c.copy(option = "i"))
             .text("Interactive rebase")
         ),

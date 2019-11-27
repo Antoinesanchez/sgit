@@ -16,17 +16,17 @@ object Log {
     || !Files.exists(Paths.get(target + ".sgit/HEAD"))) "fatal: not a sgit repository"
     else {
       val branch = {
-      val fHEAD = target + ".sgit/HEAD"
-      if (Files.exists(Paths.get(fHEAD))) 
-        Files
-          .readString(Paths.get(fHEAD))
-          .split("/")
-          .last
-      else {
-        Tools.createDirOrFile(false, fHEAD)
-        Tools.writeFile(fHEAD, "ref: refs/heads/master")
-        "master"
-      }
+        val fHEAD = target + ".sgit/HEAD"
+        if (Files.exists(Paths.get(fHEAD))) 
+          Files
+            .readString(Paths.get(fHEAD))
+            .split("/")
+            .last
+        else {
+          Tools.createDirOrFile(false, fHEAD)
+          Tools.writeFile(fHEAD, "ref: refs/heads/master")
+          "master"
+        }
     }
     val ref = target + ".sgit/refs/heads/" + branch
       option match {
@@ -35,7 +35,7 @@ object Log {
           else {
             sgitTools
               .yieldCommits(ref)
-              .map(line => "commit: " + line.split(" ").last + "\n")
+              .map(line => "commit: " + line.split(" ")(1) + " " + line.split(" ").last + "\n")
               .foldLeft("")((res, line) => res + line)
           }
         }
@@ -45,9 +45,10 @@ object Log {
             sgitTools
               .yieldCommits(ref)
               .map(line => {
-                val hash1 = line.split(" ").last
+                val hash1 = line.split(" ")(1)
                 val hash2 = line.split(" ").head
-                "commit: " + hash1 + "\n" + (sgitTools
+                val message = line.split(" ").last
+                "commit: " + hash1 + " " + message + "\n" + (sgitTools
                   .commitCommitDeltas(hash1, hash2, target)
                   .map(file => sgitTools.commitDiff(file, hash1, hash2, target))
                   .foldLeft("")((res, line) => res + line))

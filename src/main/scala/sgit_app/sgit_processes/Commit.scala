@@ -10,7 +10,7 @@ object Commit {
   /**
   * Record changes to the repository
   */
-  def sgit_commit(target: String = ""): String = {
+  def sgit_commit(option: String = "", message: String = "", target: String = ""): String = {
     if(!Files.exists(Paths.get(target + ".sgit"))
     || !Files.exists(Paths.get(target + ".sgit/objects"))
     || !Files.exists(Paths.get(target + ".sgit/HEAD"))) "fatal: not a sgit repository"
@@ -51,7 +51,7 @@ object Commit {
       //Initial commit
       if (index.replaceAll(" ", "").replaceAll("\n", "").nonEmpty) {
         //index is not empty, changes to commit
-        val commit = "0000000000000000000000000000000000000000 " + hash + "\n"
+        val commit = "0000000000000000000000000000000000000000 " + hash + " " + message + "\n"
         Tools.createDirOrFile(true, name)
         Tools.createDirOrFile(false, name + "/" + hash)
         Tools.createDirOrFile(false, ref)
@@ -74,20 +74,24 @@ object Commit {
         .contentAsString
         .split("\n")
         .last
-        .split(" ")
-        .last
-      val commit = parentCommit + " " + hash
-      Tools.createDirOrFile(true, name)
-      Tools.createDirOrFile(false, name + "/" + hash)
-      newObjects.foreach(o => {
-        val newObject = name + "/" + o
-        val newContent = o.toFile.contentAsString
-        Tools.createDirOrFile(false, newObject)
-        Tools.writeFile(newObject, newContent)
-      })
-      Tools.writeFile(ref, commit)
-      Tools.writeFile(name + "/" + hash, index)
-      "changes are commited"
+        .split(" ")(1)
+      val parentCommitContent = Files.readString(Paths.get(target + ".sgit/objects/" + parentCommit + "/" + parentCommit))
+      if (index != parentCommitContent) {
+        val commit = parentCommit + " " + hash + " " + message + "\n"
+        Tools.createDirOrFile(true, name)
+        Tools.createDirOrFile(false, name + "/" + hash)
+        newObjects.foreach(o => {
+          val newObject = name + "/" + o
+          val newContent = o.toFile.contentAsString
+          Tools.createDirOrFile(false, newObject)
+          Tools.writeFile(newObject, newContent)
+        })
+        Tools.writeFile(ref, commit)
+        Tools.writeFile(name + "/" + hash, index)
+        "changes are commited"
+      } else {
+        "Nothing to commit"
+      }
     }
   }
 }

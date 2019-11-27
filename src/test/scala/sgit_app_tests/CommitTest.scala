@@ -23,7 +23,7 @@ class CommitTest extends FunSpec with BeforeAndAfter {
 
   describe("With no staged files") {
     it("should return nothing to commit") {
-      assert(Commit.sgit_commit("test/").contains("Nothing to commit"))
+      assert(Commit.sgit_commit("","","test/").contains("Nothing to commit"))
     }
   }
 
@@ -32,7 +32,7 @@ class CommitTest extends FunSpec with BeforeAndAfter {
     describe("And no initial commit") {
       it("Should create a branch named master that references the commit") {
         Add.sgit_add(Seq("."), "test/")
-        Commit.sgit_commit("test/")
+        Commit.sgit_commit("","","test/")
         val objects = "test/.sgit/objects"
         .toFile
         .children
@@ -58,7 +58,7 @@ class CommitTest extends FunSpec with BeforeAndAfter {
 
       it("Should create a commit in the .sgit/objects folder") {
         Add.sgit_add(Seq("."), "test/")
-        Commit.sgit_commit("test/")
+        Commit.sgit_commit("","","test/")
         val objects = "test/.sgit/objects"
         .toFile
         .children
@@ -79,7 +79,7 @@ class CommitTest extends FunSpec with BeforeAndAfter {
 
       it("Should reference the previous commit as a parent of the new one") {
         Add.sgit_add(Seq("."), "test/")
-        Commit.sgit_commit("test/")
+        Commit.sgit_commit("","","test/")
         val commit = "test/.sgit/refs/heads/master"
           .toFile
           .contentAsString
@@ -90,7 +90,7 @@ class CommitTest extends FunSpec with BeforeAndAfter {
         Tools.createDirOrFile(false,"test/a.md")
         Tools.createDirOrFile(false,"test/a.cpp")
         Add.sgit_add(Seq("."), "test/")
-        Commit.sgit_commit("test/")
+        Commit.sgit_commit("","","test/")
         val objects = "test/.sgit/objects"
         .toFile
         .children

@@ -35,7 +35,7 @@ class BranchTest extends FunSpec with BeforeAndAfter {
 
       it("Should create the branch succesfully if not already used") {
         Add.sgit_add(Seq("."), "test/")
-        Commit.sgit_commit("test/")
+        Commit.sgit_commit("","","test/")
         Branch.sgit_branch("branch", "", "test/")
         val lastCommitHash = "test/.sgit/refs/heads/master"
           .toFile
@@ -48,14 +48,14 @@ class BranchTest extends FunSpec with BeforeAndAfter {
 
       it("Shouldn't allow a user to create the same tag twice") {
         Add.sgit_add(Seq("."), "test/")
-        Commit.sgit_commit("test/")
+        Commit.sgit_commit("","","test/")
         assert(Branch.sgit_branch("branch", "", "test/") == "")
         assert(Branch.sgit_branch("branch", "", "test/") == "fatal: A branch named 'branch' already exists")
       }
 
       it("Should list branches and tags if the option is av") {
         Add.sgit_add(Seq("."), "test/")
-        Commit.sgit_commit("test/")
+        Commit.sgit_commit("","","test/")
         Branch.sgit_branch("branch", "", "test/")
         Branch.sgit_branch("zranch", "", "test/")
         STag.sgit_tag("tag", "test/")

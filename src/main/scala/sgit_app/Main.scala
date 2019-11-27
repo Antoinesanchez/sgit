@@ -25,7 +25,7 @@ object Main extends App {
       case "status"   => println(Status.sgit_status())
       case "diff"     => println(Diff.sgit_diff())
       case "add"      => println(Add.sgit_add(config.files))
-      case "commit"   => println(Commit.sgit_commit())
+      case "commit"   => println(Commit.sgit_commit(config.option, config.message))
       case "log"      => println(Log.sgit_log(config.option))
       case "branch"   => println(Branch.sgit_branch(config.branch, config.option))
       case "checkout" => println(Checkout.sgit_checkout(config.checkout))

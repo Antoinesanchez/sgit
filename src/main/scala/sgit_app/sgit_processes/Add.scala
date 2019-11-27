@@ -30,14 +30,17 @@ object Add {
       }).map(f => {
         sgitTools.createStaged(f)
       })
+      index = index.filter(line => {
+        filesToBeWritten.count(f => line.contains(f.fileName)) == 1
+      })
       filesToBeWritten
         .foreach(f => {
         var staged = f.toString
-        if (!index.contains(f.fileName)) {
+        if (index.filter(line => line.contains(f.fileName)).size == 0) {
           index = index :+ staged
         }
-        else if (!index.contains(f.contentHash)) {
-          index = index.filter(e => !e.contains(f.fileName))
+        else if (index.filter(line => line.contains(f.contentHash)).size == 0) {
+          index = index.filter(line => !line.contains(f.fileName))
           index = index :+ staged
         }
       })

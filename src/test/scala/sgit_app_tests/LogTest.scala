@@ -16,12 +16,12 @@ class LogTest extends FunSpec with BeforeAndAfter {
     Tools.writeFile("test/a.txt", "This is a test in a text file")
     Tools.writeFile("test/a.c", "This is a test in a c file")
     Add.sgit_add(Seq("."), "test/")
-    Commit.sgit_commit("test/")
+    Commit.sgit_commit("","","test/")
     Tools.delete("test/a.txt")
     Tools.createDirOrFile(false,"test/a.txt")
     Tools.writeFile("test/a.txt", "This is a sgit log test")
     Add.sgit_add(Seq("."), "test/")    
-    Commit.sgit_commit("test/")
+    Commit.sgit_commit("","","test/")
   }
 
   after {
@@ -43,7 +43,9 @@ class LogTest extends FunSpec with BeforeAndAfter {
         .last
         .split(" ")
         .last
-      assert(Log.sgit_log("", "test/").contains("commit: " + index2 + "\ncommit: " + index1))
+      val output = Log.sgit_log("", "test/")
+      assert(output.contains("commit: " + index2))
+      assert(output.split("commit: " + index2).last.contains("commit: " + index1))
     }
 
     it("Should display the name of commits as well as diffs if flag p is used") {

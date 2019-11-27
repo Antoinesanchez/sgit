@@ -35,13 +35,13 @@ class DiffTest extends FunSpec with BeforeAndAfter {
 
       it("Shouldn't print anything if I don't update anything") {
         Add.sgit_add(Seq("."), "test/")
-        Commit.sgit_commit("test/")
+        Commit.sgit_commit("","","test/")
         assert(Diff.sgit_diff("test/") == "")
       }
 
       it("Should display a diff if something is updated") {
         Add.sgit_add(Seq("."), "test/")
-        Commit.sgit_commit("test/")
+        Commit.sgit_commit("","","test/")
         Tools.delete("test/a.txt")
         Tools.createDirOrFile(false,"test/a.txt")
         Tools.writeFile("test/a.txt", "This is being added for the sake of this test")
@@ -51,7 +51,7 @@ class DiffTest extends FunSpec with BeforeAndAfter {
 
       it("Should display a diff if something is deleted") {
         Add.sgit_add(Seq("."), "test/")
-        Commit.sgit_commit("test/")
+        Commit.sgit_commit("","","test/")
         Tools.delete("test/a.txt")
         assert(Diff.sgit_diff("test/").contains("- This is a test in a text file"))
       }

@@ -29,7 +29,7 @@ object sgitTools {
     })
     index.foreach(line => {
       val fileName = line.split(" ").head
-      if (wd.filter(f => f.fileName.contains(fileName)).size == 0) {
+      if (line != "" && wd.filter(f => f.fileName.contains(fileName)).size == 0) {
         //File no longer in working directory => deleted
         deleted = deleted :+ fileName
       }
